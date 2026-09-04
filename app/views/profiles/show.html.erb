@@ -1,0 +1,25 @@
+<h1><%= @user.name %></h1>
+
+<% if @user.avatar.attached? %>
+  <%= image_tag @user.avatar, style: "max-width: 150px;" %>
+<% end %>
+
+<p><%= @user.bio %></p>
+
+<h3>Μαθήματα</h3>
+<ul>
+  <% @user.courses.each do |course| %>
+    <li><%= course.title %></li>
+  <% end %>
+</ul>
+
+<h3>Ενδιαφέροντα</h3>
+<ul>
+  <% @user.interests.each do |interest| %>
+    <li><%= interest.name %></li>
+  <% end %>
+</ul>
+
+<% if @user == current_user %>
+  <%= link_to "Επεξεργασία προφίλ", edit_profile_path %>
+<% end %>

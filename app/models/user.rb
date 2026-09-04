@@ -1,6 +1,12 @@
 class User < ApplicationRecord
   has_one_attached :avatar
 
+  has_many :enrollments, dependent: :destroy
+  has_many :courses, through: :enrollments
+
+  has_many :user_interests, dependent: :destroy
+  has_many :interests, through: :user_interests
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]

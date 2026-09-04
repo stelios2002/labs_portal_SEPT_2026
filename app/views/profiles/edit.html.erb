@@ -1,0 +1,20 @@
+<h1>Επεξεργασία προφίλ</h1>
+
+<%= form_with model: @user, url: profile_path, method: :patch, multipart: true do |f| %>
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :bio %>
+  <%= f.text_area :bio %>
+
+  <%= f.label :avatar %>
+  <%= f.file_field :avatar %>
+
+  <h3>Μαθήματα</h3>
+  <%= f.collection_check_boxes :course_ids, Course.all, :id, :title %>
+
+  <h3>Ενδιαφέροντα</h3>
+  <%= f.collection_check_boxes :interest_ids, Interest.all, :id, :name %>
+
+  <%= f.submit "Αποθήκευση" %>
+<% end %>
