@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :user_interests, dependent: :destroy
   has_many :interests, through: :user_interests
 
+  has_many :posts, dependent: :destroy
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]

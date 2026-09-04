@@ -1,0 +1,10 @@
+<h1><%= @post.title %></h1>
+<p>από <%= @post.user.name %> — <%= @post.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+<div><%= simple_format(@post.body) %></div>
+
+<% if @post.user == current_user %>
+  <%= link_to "Επεξεργασία", edit_post_path(@post) %>
+  <%= button_to "Διαγραφή", post_path(@post), method: :delete %>
+<% end %>
+
+<%= link_to "← Πίσω στα posts", posts_path %>

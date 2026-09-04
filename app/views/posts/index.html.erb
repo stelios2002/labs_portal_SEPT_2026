@@ -1,0 +1,9 @@
+<h1>Posts</h1>
+<%= link_to "Νέο post", new_post_path %>
+
+<% @posts.each do |post| %>
+  <div>
+    <h3><%= link_to post.title, post %></h3>
+    <p>από <%= post.user.name %> — <%= post.created_at.strftime("%d/%m/%Y") %></p>
+  </div>
+<% end %>
