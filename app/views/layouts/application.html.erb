@@ -9,6 +9,10 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <div data-controller="chat-popup" data-chat-popup-target="wrapper" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 350px; height: 450px; border: 1px solid #ccc; background: white; overflow-y: auto; z-index: 1000;">
+      <%= turbo_frame_tag "chat_popup_content" %>
+    </div>
+
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
