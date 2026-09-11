@@ -32,6 +32,12 @@ Rails.application.routes.draw do
     resources :messages, only: [:create]
   end
 
+  resources :notifications, only: [:index] do
+    member do
+      patch :mark_as_read
+    end
+  end
+
   post "conversations/start_with_user/:user_id", to: "conversations#start_with_user", as: :start_conversation_with_user
   post "conversations/start_with_group/:group_id", to: "conversations#start_with_group", as: :start_conversation_with_group
 end

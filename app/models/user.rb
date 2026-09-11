@@ -21,6 +21,8 @@ class User < ApplicationRecord
   has_many :conversations, through: :conversation_users
   has_many :messages, dependent: :destroy
 
+  has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
+
   def contacts
     accepted_sent = User.joins("INNER JOIN contacts ON contacts.recipient_id = users.id")
                         .where(contacts: { requester_id: id, status: "accepted" })

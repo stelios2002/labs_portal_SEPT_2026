@@ -5,6 +5,7 @@ class Message < ApplicationRecord
   validates :body, presence: true, length: { maximum: 2000 }
 
   after_create_commit :broadcast_message
+  after_create_commit :notify_recipients
 
   private
 
@@ -19,5 +20,11 @@ class Message < ApplicationRecord
         created_at: created_at.strftime("%H:%M")
       }
     )
+  end
+
+  def notify_recipients
+    conversation.users.where.not(id: user_id).each do |recipient|
+      NewMessageNotifier.with(message: self).deliver(recipient)
+    end
   end
 end
