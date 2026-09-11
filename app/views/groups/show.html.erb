@@ -9,6 +9,7 @@
 </ul>
 
 <% if @is_member %>
+  <%= button_to "Chat ομάδας", start_conversation_with_group_path(@group), method: :post %>
   <%= button_to "Αποχώρηση", leave_group_path(@group), method: :delete %>
 <% else %>
   <%= button_to "Συμμετοχή", join_group_path(@group), method: :post %>

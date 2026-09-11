@@ -1,0 +1,6 @@
+<h1>Συνομιλίες</h1>
+<% @conversations.each do |c| %>
+  <div>
+    <%= link_to c.group ? c.group.name : c.users.where.not(id: current_user.id).first&.name, c %>
+  </div>
+<% end %>

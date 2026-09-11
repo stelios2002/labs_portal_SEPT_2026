@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   mount ActionCable.server => "/cable"
-  
+
   resource :profile, only: [:show, :edit, :update]
 
   resources :posts
@@ -27,4 +27,11 @@ Rails.application.routes.draw do
   end
 
   resources :matches, only: [:index]
+  
+  resources :conversations, only: [:index, :show] do
+    resources :messages, only: [:create]
+  end
+
+  post "conversations/start_with_user/:user_id", to: "conversations#start_with_user", as: :start_conversation_with_user
+  post "conversations/start_with_group/:group_id", to: "conversations#start_with_group", as: :start_conversation_with_group
 end

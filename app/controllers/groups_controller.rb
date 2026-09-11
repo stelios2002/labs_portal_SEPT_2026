@@ -27,6 +27,12 @@ class GroupsController < ApplicationController
 
   def join
     @group.memberships.find_or_create_by!(user: current_user) { |m| m.role = "member" }
+
+    conversation = @group.conversations.first
+    if conversation && !conversation.users.include?(current_user)
+      ConversationUser.create!(conversation: conversation, user: current_user)
+    end
+
     redirect_to @group, notice: "Έγινες μέλος"
   end
 
