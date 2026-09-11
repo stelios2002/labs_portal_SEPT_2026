@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_11_170526) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_11_171437) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,6 +59,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_170526) do
     t.index ["requester_id"], name: "index_contacts_on_requester_id"
   end
 
+  create_table "conversation_users", force: :cascade do |t|
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["conversation_id", "user_id"], name: "index_conversation_users_on_conversation_id_and_user_id", unique: true
+    t.index ["conversation_id"], name: "index_conversation_users_on_conversation_id"
+    t.index ["user_id"], name: "index_conversation_users_on_user_id"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.bigint "group_id"
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_conversations_on_group_id"
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string "code"
     t.datetime "created_at", null: false
@@ -100,6 +117,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_170526) do
     t.index ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "body"
+    t.bigint "conversation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "post_categories", force: :cascade do |t|
@@ -153,11 +180,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_170526) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "contacts", "users", column: "recipient_id"
   add_foreign_key "contacts", "users", column: "requester_id"
+  add_foreign_key "conversation_users", "conversations"
+  add_foreign_key "conversation_users", "users"
+  add_foreign_key "conversations", "groups"
   add_foreign_key "enrollments", "courses"
   add_foreign_key "enrollments", "users"
   add_foreign_key "groups", "users", column: "owner_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users"
   add_foreign_key "post_categories", "categories"
   add_foreign_key "post_categories", "posts"
   add_foreign_key "posts", "users"
