@@ -12,6 +12,11 @@ class User < ApplicationRecord
   has_many :sent_requests, class_name: "Contact", foreign_key: :requester_id, dependent: :destroy
   has_many :received_requests, class_name: "Contact", foreign_key: :recipient_id, dependent: :destroy
 
+
+  has_many :memberships, dependent: :destroy
+  has_many :groups, through: :memberships
+  has_many :owned_groups, class_name: "Group", foreign_key: :owner_id, dependent: :destroy
+  
   def contacts
     accepted_sent = User.joins("INNER JOIN contacts ON contacts.recipient_id = users.id")
                         .where(contacts: { requester_id: id, status: "accepted" })

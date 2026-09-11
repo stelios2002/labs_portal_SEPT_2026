@@ -17,4 +17,13 @@ Rails.application.routes.draw do
       patch :reject
     end
   end
+
+  resources :groups, only: [:index, :show, :new, :create] do
+    member do
+      post :join
+      delete :leave
+    end
+  end
+
+  resources :matches, only: [:index]
 end
