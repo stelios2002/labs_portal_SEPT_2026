@@ -8,4 +8,8 @@ class Post < ApplicationRecord
   validates :body, presence: true, length: { maximum: 5000 }
 
   scope :recent, -> { order(created_at: :desc) }
+
+  pg_search_scope :search_by_text,
+                   against: [:title, :body],
+                   using: { tsearch: { prefix: true } }
 end

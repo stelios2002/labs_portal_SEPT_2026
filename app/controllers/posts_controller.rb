@@ -4,7 +4,9 @@ class PostsController < ApplicationController
   before_action :authorize_owner!, only: [:edit, :update, :destroy]
 
   def index
-    @posts = Post.recent.includes(:user)
+    @posts = Post.recent.includes(:user, :categories)
+    @posts = @posts.search_by_text(params[:q]) if params[:q].present?
+    @posts = @posts.joins(:categories).where(categories: { id: params[:category_id] }) if params[:category_id].present?
   end
 
   def show
@@ -50,6 +52,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :body)
+    params.require(:post).permit(:title, :body, category_ids: [])
   end
 end

@@ -1,5 +1,10 @@
 <h1><%= @post.title %></h1>
 <p>από <%= @post.user.name %> — <%= @post.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+
+<% if @post.categories.any? %>
+  <p>Κατηγορίες: <%= @post.categories.map(&:name).join(", ") %></p>
+<% end %>
+
 <div><%= simple_format(@post.body) %></div>
 
 <% if @post.user == current_user %>
