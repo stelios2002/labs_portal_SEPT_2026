@@ -10,4 +10,11 @@ Rails.application.routes.draw do
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  resources :contacts, only: [:index, :create, :destroy] do
+    member do
+      patch :accept
+      patch :reject
+    end
+  end
 end

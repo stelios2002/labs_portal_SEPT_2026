@@ -9,6 +9,17 @@ class User < ApplicationRecord
 
   has_many :posts, dependent: :destroy
 
+  has_many :sent_requests, class_name: "Contact", foreign_key: :requester_id, dependent: :destroy
+  has_many :received_requests, class_name: "Contact", foreign_key: :recipient_id, dependent: :destroy
+
+  def contacts
+    accepted_sent = User.joins("INNER JOIN contacts ON contacts.recipient_id = users.id")
+                        .where(contacts: { requester_id: id, status: "accepted" })
+    accepted_received = User.joins("INNER JOIN contacts ON contacts.requester_id = users.id")
+                            .where(contacts: { recipient_id: id, status: "accepted" })
+    User.where(id: accepted_sent.select(:id)).or(User.where(id: accepted_received.select(:id)))
+  end
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :omniauthable, omniauth_providers: [:google_oauth2, :facebook]

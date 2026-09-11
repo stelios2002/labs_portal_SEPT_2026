@@ -22,4 +22,6 @@
 
 <% if @user == current_user %>
   <%= link_to "Επεξεργασία προφίλ", edit_profile_path %>
+<% else %>
+  <%= button_to "Προσθήκη επαφής", contacts_path(recipient_id: @user.id), method: :post %>
 <% end %>
