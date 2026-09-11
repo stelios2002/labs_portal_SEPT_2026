@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  include PgSearch::Model
+  
   belongs_to :user
 
   has_many :post_categories, dependent: :destroy
