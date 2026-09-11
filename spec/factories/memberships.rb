@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :membership do
-    group { nil }
-    user { nil }
-    role { "MyString" }
+    group
+    user
+    role { "member" }
   end
 end

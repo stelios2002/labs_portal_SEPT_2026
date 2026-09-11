@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :course do
-    code { "MyString" }
-    title { "MyString" }
+    sequence(:code) { |n| "CS#{100 + n}" }
+    title { Faker::Educator.course_name }
   end
 end

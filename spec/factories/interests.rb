@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :interest do
-    name { "MyString" }
+    sequence(:name) { |n| "Interest #{n}" }
   end
 end

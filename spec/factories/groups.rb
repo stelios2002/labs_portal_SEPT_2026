@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :group do
-    name { "MyString" }
-    description { "MyText" }
-    owner { nil }
+    name { Faker::Team.name }
+    description { Faker::Lorem.paragraph }
+    owner factory: :user
   end
 end
