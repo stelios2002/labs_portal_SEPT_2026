@@ -1,0 +1,10 @@
+<h1>Ειδοποιήσεις</h1>
+
+<% @notifications.each do |notification| %>
+  <div class="row-card" style="<%= notification.read? ? 'opacity: 0.55;' : '' %>">
+    <p><%= notification.message_text %></p>
+    <% unless notification.read? %>
+      <%= button_to "Σήμανση ως αναγνωσμένο", mark_as_read_notification_path(notification), method: :patch, class: "btn" %>
+    <% end %>
+  </div>
+<% end %>

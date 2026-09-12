@@ -1,8 +1,5 @@
 <h1>Posts</h1>
-<%= link_to "Νέο post", new_post_path %>
-
-<h1>Posts</h1>
-<%= link_to "Νέο post", new_post_path %>
+<%= link_to "Νέο post", new_post_path, class: "btn" %>
 
 <%= form_with url: posts_path, method: :get do %>
   <%= text_field_tag :q, params[:q], placeholder: "Αναζήτηση..." %>
@@ -13,9 +10,9 @@
 <% end %>
 
 <% @posts.each do |post| %>
-  <div>
+  <div class="row-card">
     <h3><%= link_to post.title, post %></h3>
-    <p>
+    <p class="meta">
       από <%= post.user.name %> — <%= post.created_at.strftime("%d/%m/%Y") %>
       <% if post.categories.any? %>
         — <%= post.categories.map(&:name).join(", ") %>

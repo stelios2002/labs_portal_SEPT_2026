@@ -5,11 +5,13 @@ class ConversationsController < ApplicationController
 
   def index
     @conversations = current_user.conversations.includes(:users, :messages)
+    render layout: false if turbo_frame_request?
   end
 
   def show
     @messages = @conversation.messages.includes(:user).order(:created_at)
     @message = Message.new
+    render layout: false if turbo_frame_request?
   end
 
   def start_with_user

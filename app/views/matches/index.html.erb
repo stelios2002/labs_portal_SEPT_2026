@@ -2,13 +2,13 @@
 
 <% if @matches.any? %>
   <% @matches.each do |user| %>
-    <div>
+    <div class="row-card">
       <h3><%= link_to user.name, profile_path(user) %></h3>
-      <p>
+      <p class="meta">
         Κοινά μαθήματα: <%= (user.courses & current_user.courses).map(&:title).join(", ").presence || "—" %><br>
         Κοινά ενδιαφέροντα: <%= (user.interests & current_user.interests).map(&:name).join(", ").presence || "—" %>
       </p>
-      <%= button_to "Προσθήκη επαφής", contacts_path(recipient_id: user.id), method: :post %>
+      <%= button_to "Προσθήκη επαφής", contacts_path(recipient_id: user.id), method: :post, class: "btn" %>
     </div>
   <% end %>
 <% else %>

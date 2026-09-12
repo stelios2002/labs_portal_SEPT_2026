@@ -1,6 +1,17 @@
-<h1>Συνομιλίες</h1>
-<% @conversations.each do |c| %>
-  <div>
-    <%= link_to c.group ? c.group.name : c.users.where.not(id: current_user.id).first&.name, c %>
-  </div>
+<% content = capture do %>
+  <h2>Συνομιλίες</h2>
+  <% @conversations.each do |c| %>
+    <div class="row-card">
+      <%= link_to (c.group ? c.group.name : c.users.where.not(id: current_user.id).first&.name),
+            c, data: { turbo_frame: "chat_popup_content" } %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if turbo_frame_request? %>
+  <%= turbo_frame_tag "chat_popup_content" do %>
+    <%= content %>
+  <% end %>
+<% else %>
+  <%= content %>
 <% end %>

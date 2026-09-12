@@ -1,9 +1,9 @@
 <h1>Ομάδες</h1>
-<%= link_to "Νέα ομάδα", new_group_path %>
+<%= link_to "Νέα ομάδα", new_group_path, class: "btn" %>
 
 <% @groups.each do |group| %>
-  <div>
+  <div class="row-card">
     <h3><%= link_to group.name, group %></h3>
-    <p><%= group.users.count %> μέλη — owner: <%= group.owner.name %></p>
+    <p class="meta"><%= group.users.count %> μέλη — owner: <%= group.owner.name %></p>
   </div>
 <% end %>

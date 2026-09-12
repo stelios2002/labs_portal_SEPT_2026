@@ -1,6 +1,4 @@
-<h1><%= @conversation.group ? @conversation.group.name : @conversation.users.where.not(id: current_user.id).first&.name %></h1>
-
-<%= turbo_frame_tag "chat_popup_content" do %>
+<% content = capture do %>
   <h2><%= @conversation.group ? @conversation.group.name : @conversation.users.where.not(id: current_user.id).first&.name %></h2>
 
   <%= turbo_stream_from @conversation %>
@@ -14,22 +12,13 @@
     <%= f.submit "Αποστολή" %>
   <% end %>
 
-  <button data-action="chat-popup#close" type="button">Κλείσιμο</button>
+  <button data-action="chat-popup#close" type="button" class="btn">Κλείσιμο</button>
 <% end %>
 
-<% if params[:popup] %>
-  <script>
-    document.addEventListener("turbo:frame-load", () => {
-      document.querySelector('[data-controller="chat-popup"]').style.display = "block"
-    }, { once: true })
-  </script>
-<% end %>
-
-<div id="messages">
-  <%= render @messages %>
-</div>
-
-<%= form_with model: @message, url: conversation_messages_path(@conversation) do |f| %>
-  <%= f.text_field :body, autocomplete: "off" %>
-  <%= f.submit "Αποστολή" %>
+<% if turbo_frame_request? %>
+  <%= turbo_frame_tag "chat_popup_content" do %>
+    <%= content %>
+  <% end %>
+<% else %>
+  <%= content %>
 <% end %>

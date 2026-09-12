@@ -1,23 +1,25 @@
 <h1>Επαφές</h1>
 
-<h3>Αιτήματα προς εσένα</h3>
+<h2>Αιτήματα προς εσένα</h2>
 <% @pending_received.each do |contact| %>
-  <div>
-    <%= contact.requester.name %>
-    <%= button_to "Αποδοχή", accept_contact_path(contact), method: :patch %>
-    <%= button_to "Απόρριψη", reject_contact_path(contact), method: :patch %>
+  <div class="row-card">
+    <p><%= contact.requester.name %></p>
+    <%= button_to "Αποδοχή", accept_contact_path(contact), method: :patch, class: "btn" %>
+    <%= button_to "Απόρριψη", reject_contact_path(contact), method: :patch, class: "btn" %>
   </div>
 <% end %>
 
-<h3>Αιτήματα που έστειλες (εκκρεμή)</h3>
+<h2>Αιτήματα που έστειλες (εκκρεμή)</h2>
 <% @pending_sent.each do |contact| %>
-  <div><%= contact.recipient.name %> — αναμονή</div>
+  <div class="row-card">
+    <p class="meta"><%= contact.recipient.name %> — αναμονή</p>
+  </div>
 <% end %>
 
-<h3>Οι επαφές σου</h3>
+<h2>Οι επαφές σου</h2>
 <% @contacts.each do |user| %>
-  <div>
+  <div class="row-card">
     <%= link_to user.name, profile_path(user) %>
-    <%= button_to "Αφαίρεση", contact_path(user), method: :delete %>
+    <%= button_to "Αφαίρεση", contact_path(user), method: :delete, class: "btn" %>
   </div>
 <% end %>

@@ -24,5 +24,6 @@
   <%= link_to "Επεξεργασία προφίλ", edit_profile_path %>
 <% else %>
   <%= button_to "Προσθήκη επαφής", contacts_path(recipient_id: @user.id), method: :post %>
-  <%= button_to "Μήνυμα", start_conversation_with_user_path(@user), method: :post %>
+  <%= button_to "Μήνυμα", start_conversation_with_user_path(@user), method: :post,
+      form: { data: { turbo_frame: "chat_popup_content" } } %>
 <% end %>

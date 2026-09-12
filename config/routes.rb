@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
+
+  root to: "posts#index"
+
   mount ActionCable.server => "/cable"
 
-  resource :profile, only: [:show, :edit, :update]
+  get   "/profile(/:id)", to: "profiles#show",   as: :profile
+  get   "/profile/edit",  to: "profiles#edit",   as: :edit_profile
+  patch "/profile",       to: "profiles#update"
 
   resources :posts
 
