@@ -19,7 +19,7 @@ Portal εργαστηριακών ασκήσεων (Θέμα 1). Working notes, 
 - noticed (v3) — notifications, με delivery μέσω ActionCable
 - Hotwire (Turbo Streams + Stimulus) — real-time UI χωρίς custom JS σε κάθε σημείο
 
-## Εγκατάσταση (τοπικά, Windows)
+## Εγκατάσταση
 
 ```bash
 git clone https://github.com/stelios2002/labs_portal_SEPT_2026
@@ -44,7 +44,7 @@ Server στο `http://localhost:3000`. Demo χρήστες (από τα seeds):
 | giannis@example.com | secret456 |
 | eleni@example.com | secret789 |
 
-### Redis / ActionCable (χρειάζεται για το chat, Part 11+)
+### Redis / ActionCable
 
 Windows δεν έχει επίσημο Redis build — χρησιμοποιούμε **Memurai** (Redis-συμβατό, native Windows): [memurai.com/get-memurai](https://memurai.com/get-memurai), Developer edition. Τρέχει ως Windows service αυτόματα στο port 6379. Επιβεβαίωση: `redis-cli ping` → `PONG`.
 
@@ -93,17 +93,24 @@ Redirect URIs που πρέπει να δηλωθούν στα αντίστοι�
 - **Message** — conversation, user, body· broadcast μέσω Turbo Stream + notifier σε κάθε νέο μήνυμα
 - **Noticed::Event / Noticed::Notification** — διαχειρίζονται πλήρως από το gem `noticed`, όχι δικά μας μοντέλα
 
-## Δύο ξεχωριστοί μηχανισμοί authentication (σκόπιμο, το ζητά η εκφώνηση)
+## Δύο ξεχωριστοί μηχανισμοί authentication
 
 1. **Devise** (session-based) — για κανονικούς χρήστες, με email/password ή Google/Facebook OAuth
 2. **HTTP Basic Auth** (stateless) — μόνο για το `/admin` namespace, εντελώς ανεξάρτητο από το Devise
 
-## Real-time κομμάτια (Parts 11-13)
+## Real-time κομμάτια
 
 - **Chat**: `ConversationChannel`, ένα stream ανά συνομιλία (`conversation_#{id}`), broadcast μέσω `broadcast_append_to` (Turbo Stream, HTML fragment — όχι raw JSON)
 - **Notifications**: `NotificationsChannel`, ένα stream ανά χρήστη (`stream_for current_user`), ενεργοποιείται από `NewMessageNotifier` (noticed) σε κάθε νέο μήνυμα, εκτός του ίδιου του αποστολέα
 - Και τα δύο περνούν από authentication μέσω `env["warden"].user` στο `ApplicationCable::Connection` — το Devise session, όχι JWT (διαφορετικό μοντέλο από το Θέμα 2)
 
-## Επόμενα βήματα
+## Fixes μετά το πρώτο πέρασμα screenshots/QA
 
-Testing pass (RSpec για μοντέλα/controllers/requests, όπου εφαρμόζεται TDD αναδρομικά).
+- Devise signup: προστέθηκε πεδίο Name (view + strong parameters)
+- Root route (`root to: "posts#index"`) — έλειπε εντελώς
+- Contact: validation αμφίδρομης μοναδικότητας (requester↔recipient και οι δύο κατευθύνσεις)
+- Profile routes: custom routes με προαιρετικό `:id` (το `resource :profile` δεν υποστήριζε προβολή άλλου χρήστη)
+- noticed v3 API: `deliver_by :action_cable` χρειάζεται ρητό `config.message`
+- Chat popup: πλήρης επανασχεδίαση με `data-turbo-frame` (Turbo Frame src) αντί για static persistent container
+- Time zone: δυναμικό μέσω cookie (`Intl.DateTimeFormat` στο browser + `around_action` στον `ApplicationController`), αντί για hardcoded ζώνη
+- Admin namespace: διόρθωση ώστε το nav να μη δείχνει Devise session links (χρήση `@admin_context` flag)
