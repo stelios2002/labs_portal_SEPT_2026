@@ -78,5 +78,5 @@ group :development, :test do
   gem "faker"
   gem "shoulda-matchers"
 
-gem "redis", "~> 5.0"
+gem "redis", "~> 6.0"
 end
